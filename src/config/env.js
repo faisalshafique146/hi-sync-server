@@ -10,7 +10,7 @@ const toNumber = (value, fallback) => {
 export const env = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
   port: toNumber(process.env.PORT, 3000),
-  clientOrigin: process.env.PRODUCTION_CLIENT_ORIGIN ?? process.env.CLIENT_ORIGIN,
+  clientOrigin: process.env.CLIENT_ORIGIN ?? 'http://localhost:4200',
   mongoUri: process.env.MONGODB_URI ?? '',
   jwtAccessSecret: process.env.JWT_ACCESS_SECRET ?? '',
   jwtRefreshSecret: process.env.JWT_REFRESH_SECRET ?? '',
