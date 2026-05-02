@@ -3,11 +3,9 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
-import path from 'node:path';
 import { apiRouter } from './routes/index.js';
 import { env } from './config/env.js';
 import { errorHandler, notFound } from './middlewares/error.middleware.js';
-import { uploadsDir } from './config/multer.js';
 
 export function createApp() {
   const app = express();
@@ -39,8 +37,6 @@ export function createApp() {
   app.use(express.json({ limit: '1mb' }));
   app.use(express.urlencoded({ extended: true }));
   app.use(morgan(env.nodeEnv === 'production' ? 'combined' : 'dev'));
-
-  app.use('/uploads', express.static(path.resolve(uploadsDir)));
 
   app.get('/health', (_req, res) => {
     res.json({ ok: true, service: 'chat-api', timestamp: new Date().toISOString() });

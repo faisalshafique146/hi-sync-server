@@ -6,6 +6,7 @@ import { ApiError } from '../utils/apiError.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { serializeAuthUser } from '../utils/serializers.js';
+import { uploadBufferToTigris } from '../services/tigris-storage.js';
 
 function createTokenPair(userId) {
   return {
@@ -40,7 +41,16 @@ export const signup = asyncHandler(async (req, res) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
-  const profilePic = req.file ? `/uploads/${req.file.filename}` : null;
+  const profilePic = req.file
+    ? (
+        await uploadBufferToTigris({
+          buffer: req.file.buffer,
+          originalName: req.file.originalname,
+          mimeType: req.file.mimetype,
+          prefix: 'profile-pics'
+        })
+      ).url
+    : null;
 
   const user = await User.create({
     fullName: String(fullName).trim(),

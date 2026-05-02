@@ -4,6 +4,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { Message } from '../models/Message.js';
 import { User } from '../models/User.js';
 import { makeConversationKey, loadConversation, loadChatBootstrap, serializeMessageForUser } from '../utils/chat-data.js';
+import { uploadBufferToTigris } from '../services/tigris-storage.js';
 
 function getIo(req) {
   return req.app.get('io');
@@ -50,7 +51,16 @@ export const sendMessage = asyncHandler(async (req, res) => {
   }
 
   const trimmedText = String(text ?? '').trim();
-  const hasImage = req.file ? `/uploads/${req.file.filename}` : null;
+  const hasImage = req.file
+    ? (
+        await uploadBufferToTigris({
+          buffer: req.file.buffer,
+          originalName: req.file.originalname,
+          mimeType: req.file.mimetype,
+          prefix: 'chat-images'
+        })
+      ).url
+    : null;
 
   if (!trimmedText && !hasImage) {
     throw new ApiError(400, 'Message text or image is required');
