@@ -45,7 +45,7 @@ export async function uploadBufferToTigris({
   buffer,
   originalName,
   mimeType,
-  prefix = 'uploads'
+  prefix = ''
 }) {
   if (!buffer || buffer.length === 0) {
     throw new ApiError(400, 'Uploaded file is empty');

@@ -17,7 +17,7 @@ export const env = {
   jwtAccessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN ?? '15m',
   jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN ?? '7d',
   maxUploadSizeBytes: toNumber(process.env.MAX_UPLOAD_SIZE_BYTES, 5 * 1024 * 1024),
-  tigrisBucketName: process.env.BUCKET_NAME ?? process.env.TIGRIS_BUCKET_NAME ?? '',
+  tigrisBucketName: process.env.TIGRIS_BUCKET_NAME ?? process.env.BUCKET_NAME ?? '',
   tigrisAccessKeyId: process.env.AWS_ACCESS_KEY_ID ?? process.env.TIGRIS_ACCESS_KEY_ID ?? '',
   tigrisSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? process.env.TIGRIS_SECRET_ACCESS_KEY ?? '',
   tigrisEndpoint: process.env.AWS_ENDPOINT_URL_S3 ?? process.env.TIGRIS_ENDPOINT ?? 'https://fly.storage.tigris.dev',
@@ -25,7 +25,9 @@ export const env = {
   tigrisPublicBaseUrl:
     process.env.TIGRIS_PUBLIC_BASE_URL ??
     process.env.TIGRIS_CUSTOM_DOMAIN ??
-    (process.env.BUCKET_NAME ? `https://${process.env.BUCKET_NAME}.t3.tigrisfiles.io` : '')
+    (process.env.TIGRIS_BUCKET_NAME || process.env.BUCKET_NAME
+      ? `https://${process.env.TIGRIS_BUCKET_NAME || process.env.BUCKET_NAME}.t3.tigrisfiles.io`
+      : '')
 };
 
 export function assertEnv() {
@@ -34,7 +36,7 @@ export function assertEnv() {
   if (!env.mongoUri) missing.push('MONGODB_URI');
   if (!env.jwtAccessSecret) missing.push('JWT_ACCESS_SECRET');
   if (!env.jwtRefreshSecret) missing.push('JWT_REFRESH_SECRET');
-  if (!env.tigrisBucketName) missing.push('BUCKET_NAME');
+  if (!env.tigrisBucketName) missing.push('TIGRIS_BUCKET_NAME or BUCKET_NAME');
   if (!env.tigrisAccessKeyId) missing.push('AWS_ACCESS_KEY_ID');
   if (!env.tigrisSecretAccessKey) missing.push('AWS_SECRET_ACCESS_KEY');
   if (!env.tigrisRegion) missing.push('AWS_REGION');
