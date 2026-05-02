@@ -160,7 +160,10 @@ export function registerChatSockets(io, app) {
         return;
       }
 
-      socket.to(payload.roomId).emit('chat:typing', payload);
+      socket.to(payload.roomId).emit('chat:typing', {
+        ...payload,
+        roomId: String(userId)
+      });
     });
 
     socket.on('disconnect', () => {

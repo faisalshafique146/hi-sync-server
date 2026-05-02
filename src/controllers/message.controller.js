@@ -126,12 +126,14 @@ export const markConversationRead = asyncHandler(async (req, res) => {
     io.to(String(userId)).emit('chat:message-status', {
       roomId: String(currentUserId),
       messageId: '*',
-      status: 'read'
+      status: 'read',
+      readerId: String(currentUserId)
     });
     io.to(String(currentUserId)).emit('chat:message-status', {
       roomId: String(userId),
       messageId: '*',
-      status: 'read'
+      status: 'read',
+      readerId: String(currentUserId)
     });
   }
 
