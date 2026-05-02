@@ -28,7 +28,7 @@ export function serializeChatUser(user, req, presence = 'offline', statusMessage
 export function serializeMessage(message, req) {
   return {
     id: String(message._id),
-    roomId: String(message.conversationKey),
+    conversationKey: String(message.conversationKey),
     senderId: String(message.senderId),
     receiverId: String(message.receiverId),
     content: message.text,
