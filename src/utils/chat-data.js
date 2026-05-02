@@ -79,7 +79,7 @@ export async function loadChatBootstrap(currentUserId, req, onlineUserIds = new 
     users,
     rooms,
     messagesByRoom,
-    activeRoomId: activeRoomId ?? rooms[0]?.id ?? null
+    activeRoomId: activeRoomId ?? null
   };
 }
 
